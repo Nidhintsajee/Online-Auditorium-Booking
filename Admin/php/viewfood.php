@@ -1,0 +1,78 @@
+<?php
+/*
+COMMENTS
+~~~~~~~~
+Using Indirect GET method to pass user selected cid and cname to courses.php for EDIT/UPDATE
+syntax of URL : courses.php?cid=value&cname=value
+Using href of <a> tag to pass variables & Values
+*/
+?>
+   <?php
+   require("connect.php");
+   $query="select *  
+   from tb_food as f 
+   join tb_fotype as ft on ft.fotid=f.fotid
+   join tb_audiregi as a on a.aid=f.aid
+   ";
+   $fo=mysql_query($query) or die ("Quer Error {$query}");
+   ?>
+   <div class="viewTable">
+   <!--FOR CHECKING TABLE IS EMPTY OR NOT. IF EMPTY WE DONT HAVE TO DISPLAY THE TABLE HEADER-->
+   <?php
+    if(mysql_num_rows($fo)>0)
+	{
+   ?>
+   
+   <table  style="color:#FFF" width="54%" border="1" align="center">
+  		<tr>
+    	
+    		<th scope="col">Food ID</th>
+          <th scope="col">Item</th>  
+            <th scope="col">Type</th>
+          <th scope="col">Auditorium</th>
+
+        	<th scope="col">ACTIONS</th>
+    
+  		</tr>
+    
+  	<?php
+   		while(($fod=mysql_fetch_array($fo)))
+   		{
+	 		echo "<tr>
+	       		<td align='center'>$fod[0]</td>
+	       		
+	       		<td align='center'>$fod[2]</td>
+	       		<td align='center'>$fod[5]</td>
+	       		<td align='center'>$fod[8]</td>
+	       		
+	       		
+		   		<td align='center'>
+		   			<a  style='color:#FFF'href='food.php?foid=$fod[0]&fotid=$fod[5]&foitem=$fod[2]&aid=$fod[8]' id='lnkEdit$fod[0]'>EDIT</a>&nbsp;&nbsp;<a style='color:#FFF' href='deletefood.php?foid=$fod[0]' onclick='return confirmDelete();' id='lnkDel$fod[0]'>DELETE</a>
+		   		</td>
+		   		</tr> "; 
+   }
+  
+  ?>  
+  </table>
+  <?php
+	}
+	else
+		echo "<h4  style='color:#FFF'align='center'>No foods Added Yet!</h4>";
+  ?>
+
+<script>
+//FOR CONFIRMING DELETE ACTION
+function confirmDelete()
+{
+	
+	var decision=confirm('Confirm Your Deletion');
+	if(decision==true)
+	return true
+	else
+	return false;
+}
+//
+</script>
+</div>
+    
+   
